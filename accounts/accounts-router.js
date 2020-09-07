@@ -57,7 +57,7 @@ router.put("/:id", (req, res, next) => {
             if (count)
                 res.status(200).json({ message: 'updated succesfully' })
             else
-                res.status(500).json({ error: error.message })
+                res.status(404).json({ message: 'not found' })
 
         })
         .catch(error => {
@@ -66,9 +66,23 @@ router.put("/:id", (req, res, next) => {
             res.status(500).json({ error: error.message })
         })
 })
-
+// done
 router.delete("/:id", (req, res, next) => {
+    db('accounts')
+        .where('id', req.params.id)
+        .del()//delete instead of update
+        .then(count => {
+            if (count)
+                res.status(200).json({ message: 'remove succesfully' })
+            else
+                res.status(404).json({ message: 'not found' })
 
+        })
+        .catch(error => {
+            console.log(error)
+
+            res.status(500).json({ error: error.message })
+        })
 })
 
 // local middleware
